@@ -1,4 +1,4 @@
-# TravelTripBlog
+# Travel Trip Blog
 C# MVC ile Giriş Seviyesi
 
 MVC İle Giriş Seyivesinde Admin Panelinde Blog ve Yorum için CRUD işlemleri Jquery - AJAX ile yapıldı.

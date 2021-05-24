@@ -1,0 +1,21 @@
+﻿
+
+    <div class="content-form">
+        <h3>Bir Yorum Yapın</h3>
+        <form method="post">
+            <input type="text" name="Blogid" value="@ViewBag.deger" placeholder="ID" required enable="false" />
+            <input type="text" name="KullaniciAdi" placeholder="Kullanıcı Adı" required/>
+            <input type="text" name="Mail" placeholder="Mail Adresi" required/>
+            <textarea name="Yorum" placeholder="Yorum" required></textarea>
+            @*
+                @model TravelTrip.Models.Siniflar.Yorumlar
+                @Html.TextBoxFor(x => x.Blogid, new { @class = "form-control", @placeholder = "ID", @Value=ViewBag.deger })
+        @Html.TextBoxFor(x => x.KullaniciAdi, new { @class = "form-control", @placeholder = "Kullanıcı Adı" })
+        @Html.TextBoxFor(x => x.Mail, new { @class = "form-control", @placeholder = "Mail Adresi" })
+        @Html.TextAreaFor(x => x.Yorum, 7, 1, new { @class = "form-control", @placeholder = "Yorum" })*@
+
+            <input type="submit" value="Gönder" />
+
+
+        </form>
+    </div>

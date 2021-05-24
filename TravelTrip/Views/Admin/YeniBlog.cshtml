@@ -1,0 +1,41 @@
+﻿@model TravelTrip.Models.Siniflar.Blog
+@{
+    ViewBag.Title = "YeniBlog";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>YeniBlog</h2>
+<br />
+<form method="post" class="form-group">
+    @Html.LabelFor(x => x.Baslik)
+    @Html.TextBoxFor(x => x.Baslik, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.Tarih)
+    @Html.TextBoxFor(x => x.Tarih, new { @class = "form-control", @type = "date", @id = "theDate" })
+    <br />
+    @Html.LabelFor(x => x.BlogImage)
+    @Html.TextBoxFor(x => x.BlogImage, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.Aciklama)
+    @Html.TextAreaFor(x => x.Aciklama, new { @class = "form-control" })
+    <br />
+    <button class="btn btn-primary">Blog Ekle</button>
+</form>
+
+@section scripts{
+
+    <script>
+
+        var date = new Date();
+
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        var today = year + "-" + month + "-" + day;
+        document.getElementById("theDate").value = today;
+    </script>
+}

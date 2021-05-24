@@ -1,0 +1,194 @@
+﻿@using TravelTrip.Models.Siniflar
+@model List<Blog>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" />
+<script src="https://code.jquery.com/jquery-1.12.3.js"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+
+<h2>Blog Listesi</h2>
+<br />
+<a href="/Admin/YeniBlog" class="btn btn-primary">Yeni Blog</a>
+<br />
+<br />
+<table id="TblBloglar" class="display" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Başlık</th>
+            <th>Sil</th>
+            <th>Güncelle</th>
+            <th>Detaylar</th>
+
+
+
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var x in Model)
+        {
+            <tr>
+                <td class="td">@x.ID</td>
+                <td class="td">@x.Baslik</td>
+                <td> <a href="#" class="btn btn-danger rounded blogSil" data-blogid="@x.ID">Sil</a></td>
+
+                @*<td><a href="/Admin/BlogGetir/@x.ID" class="btn btn-success rounded" data-id="@x.ID">Güncelle</a></td>*@
+                @*<td> <a href="#" data-toggle="modal" class="view" data-blogid="/Admin/BlogGetir/@x.ID" data-target="#modelView">View</a></td>*@
+                <td>
+                    <a class="btn btn-info view" data-toggle="modal" data-blogids="/Admin/BlogGetir/@x.ID" data-target="#myModal">Güncelle</a>
+
+                </td>
+                <td><a href="/Admin/BlogGetir/@x.ID" class="btn btn-default rounded">Detaylar</a></td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="container">
+
+    <!-- Trigger the modal with a button -->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Blog Düzenleme</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+@section scripts{
+
+
+
+    <script>
+
+        $('#TblBloglar tbody').on('click', '.blogSil', function () {
+            var sonuc = confirm("Kayıt Silinsin Mi ?");
+            if (sonuc) {
+                var blogId = $(this).data("blogid");
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/BlogSil/" + blogId,
+                    success: function () {
+                        alert("Kayıt Silindi");
+                        window.location.replace("Admin/Index");
+                    },
+                    error: function () {
+                        alert("Kayıt Sırasında Hata Oluştu !");
+                    }
+                });
+            }
+            else {
+
+            }
+        });
+
+
+
+        //     $('#TblBloglar tbody').on('click', '.view', function () {
+        //         var sonuc = confirm("Kayıt Silinsin Mi ?");
+        //          var blogId = $(this).data("blogids");
+        //         alert(blogId);
+        //    if (sonuc) {
+        //        var blogId = $(this).data("blogids");
+
+        //        $.ajax({
+        //            type: "POST",
+        //            url: "/Admin/BlogGetir/" + blogId,
+        //            success: function () {
+        //                 alert(url);
+        //                 $("#myModal .modal-body").html(data);
+        //                 $("#myModal").modal("show");
+        //            },
+        //            error: function () {
+        //                alert("Kayıt Sırasında Hata Oluştu !");
+        //            }
+        //        });
+        //    }
+        //    else {
+
+        //    }
+        //});
+
+        $(function () {
+            // a tagimizde bulunan .view classımıza click olduğunda
+            $('#TblBloglar tbody').on('click', '.view', function () {
+
+                // data-target dan url mizi al
+                var url = $(this).data("blogids");
+                // bu urlimizi post et
+                $.post(url, function (data) { })
+                    //      eğer işlemimiz başarılı bir şekilde gerçekleşirse
+                    .done(function (data) {
+                        //    gelen datayı .modal-body mizin içerise html olarak ekle
+                        $("#myModal .modal-body").html(data);
+                        //  sonra da modalimizi göster
+                        $("#myModal").modal("show");
+                    })
+                    //  eğer işlem başarısız olursa
+                    .fail(function () {
+                        // modalımızın bodysine Error! yaz
+                        $("#myModal .modal-body").text("Error!!");
+                        //  sonra da modalimizi göster
+                        $("#myModal").modal("show");
+                    })
+
+            });
+        })
+
+
+    </script>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#TblBloglar').DataTable({
+            destroy: true,
+               "initComplete": function () {
+                var api = this.api();
+                api.$('.td').click( function () {
+                    api.search( this.innerHTML ).draw();
+                } );	
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ]
+        });
+    });
+
+    
+</script>
+
